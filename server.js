@@ -15,21 +15,14 @@ const app = express();
 connectDB();
 
 // Enable cors to comunicate with other ports
-const allowedDomains = ["https://vpa-frontend.netlify.app"];
-const corsOptions = {
-    origin: function (origin, callback) {
-        // Check if origin is allowd
-        if (allowedDomains.indexOf(origin) !== -1 || !origin) {
-            // null is error that means there is not an error
-            // true is to allow acces
-            callback(null, true);
-            return;
-        }
+const allowedDomains = [process.env.FRONTEND_URL];
 
-        callback(new Error("No allowed by CORS"));
-    },
-};
-app.use(cors(corsOptions));
+app.use(
+    cors({
+        origin: allowedDomains,
+        credentials: true,
+    })
+);
 
 // Body parser to read data from forms
 app.use(express.urlencoded({ extended: true }));
