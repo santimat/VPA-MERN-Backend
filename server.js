@@ -15,7 +15,7 @@ const app = express();
 connectDB();
 
 // Enable cors to comunicate with other ports
-const allowedDomains = ["http://localhost:5173", "http://localhost:3000"];
+const allowedDomains = ["https://vpa-frontend.netlify.app"];
 const corsOptions = {
     origin: function (origin, callback) {
         // Check if origin is allowd
