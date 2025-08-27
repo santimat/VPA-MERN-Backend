@@ -15,14 +15,26 @@ const app = express();
 connectDB();
 
 // Enable cors to comunicate with other ports
-const allowedDomains = [process.env.FRONTEND_URL];
+const allowedOrigins = [
+    "https://vpa-frontend.netlify.app", // tu frontend en Netlify
+    "http://localhost:5173", // dev local (Vite)
+    // agrega tu dominio custom si lo tenés, ej: "https://midominio.com"
+];
 
 app.use(
     cors({
-        origin: allowedDomains,
-        credentials: true,
+        origin(origin, cb) {
+            // Permite requests sin origin (Postman/SSR) o los que estén en la lista
+            if (!origin || allowedOrigins.includes(origin))
+                return cb(null, true);
+            return cb(new Error("CORS: Origin no permitido"));
+        },
+        credentials: true, // si usás cookies o Authorization
     })
 );
+
+// **muy importante**: habilitar preflight para todas las rutas
+app.options("*", cors());
 
 // Body parser to read data from forms
 app.use(express.urlencoded({ extended: true }));
