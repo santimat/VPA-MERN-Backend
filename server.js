@@ -33,9 +33,6 @@ app.use(
     })
 );
 
-// **muy importante**: habilitar preflight para todas las rutas
-app.options("*", cors());
-
 // Body parser to read data from forms
 app.use(express.urlencoded({ extended: true }));
 
